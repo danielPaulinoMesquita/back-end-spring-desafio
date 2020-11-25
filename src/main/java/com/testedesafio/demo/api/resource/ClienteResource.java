@@ -49,14 +49,14 @@ public class ClienteResource {
         }
     }
 
-    @PutMapping("{id}")
+    @PutMapping(value = "{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ClienteDTO clienteDTO){
         return clienteService.obterClientePorId(id).map(cliente -> {
             try {
                 Cliente cliente1 = ClienteServiceImpl.converte(clienteDTO);
                 cliente1.setId(cliente.getId());
                 clienteService.atualizar(cliente1);
-                return ResponseEntity.ok(cliente1);
+                return ResponseEntity.ok(ClienteServiceImpl.converte(cliente1));
             }catch (RegraDeNegocioException re){
                 return ResponseEntity.badRequest().body(re.getMessage());
             }
