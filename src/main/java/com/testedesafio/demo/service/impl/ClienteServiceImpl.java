@@ -26,21 +26,6 @@ public class ClienteServiceImpl implements ClienteService {
     private ClienteRepository clienteRepository;
 
     @Override
-    public Cliente autenticar(String email, String senha) {
-        Optional<Cliente> cliente = clienteRepository.findByEmails(email);
-
-        if(!cliente.isPresent()){
-            throw new RegraDeNegocioException("Email não cadastrado");
-        }
-
-        if(!cliente.get().getSenha().equals(senha)){
-            throw new ErroDeAutenticacao("Senha incorreta");
-        }
-
-        return cliente.get();
-    }
-
-    @Override
     @Transactional
     public Cliente salvarCliente(Cliente cliente) {
         cliente.getEmails().forEach(this::validarEmail);

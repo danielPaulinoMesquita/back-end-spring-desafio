@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface ClienteService {
 
-    Cliente autenticar (String email, String senha);
-
     void deletar(Long id);
 
     Cliente salvarCliente(Cliente cliente);
