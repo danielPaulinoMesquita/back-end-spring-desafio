@@ -1,8 +1,6 @@
 package com.testedesafio.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.testedesafio.demo.enums.Perfil;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,9 +22,6 @@ public class Cliente implements Serializable {
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "senha")
-    private String senha;
-
     @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 
@@ -38,16 +33,10 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "email")
     private Set<String> emails = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "perfis")
-    private Set<Perfil> perfis = new HashSet<>();
-
     public Cliente(String nome,
-                   String cpf,
-                   String senha) {
+                   String cpf) {
         this.nome = nome;
         this.cpf = cpf;
-        this.senha = senha;
     }
 
     public Cliente() {
@@ -77,14 +66,6 @@ public class Cliente implements Serializable {
         this.cpf = cpf;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public Endereco getEndereco() {
         return endereco;
     }
@@ -109,14 +90,6 @@ public class Cliente implements Serializable {
         this.emails = emails;
     }
 
-    public Set<Perfil> getPerfis() {
-        return perfis;
-    }
-
-    public void setPerfis(Set<Perfil> perfis) {
-        this.perfis = perfis;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,36 +103,5 @@ public class Cliente implements Serializable {
     public int hashCode() {
         return Objects.hash(id, cpf);
     }
-
-    /**  Nome:
-            * Mínimo de 3 caracteres;
-            * Máximo de 100 caracteres;
-            * Campo obrigatório;
-             * Permite apenas letras, espaços e números.
-        CPF:
-            * Sempre deve ser mostrado com máscara;
-            * Deve ser persistido na base sem máscara;
-            * É um campo obrigatório.
-
-      Endereço:
-            * Obrigatório preenchimento de CEP, logradouro, bairro, cidade e uf;
-            * Opcional complemento;
-            * Outros dados não devem ser preenchidos;
-            * Deve estar integrado com um serviço de consulta de CEP. Sugestão: https://viacep.com.br/
-            * O usuário pode alterar os dados que vieram do serviço de consulta de CEP;
-            * O CEP deve ser mostrado com máscara;
-            * O CEP deve ser persistido sem máscara.
-      Telefones:
-            * Podem ser cadastrados múltiplos telefones;
-            * Pelo menos um telefone deve ser cadastrado;
-            * No cadastro de telefone, deve ser informado o tipo de telefone (residencial, comercial e celular) e o número;
-            * A máscara de telefone deve ser de acordo com o tipo de telefone (celular possui um digito a mais);
-            * o telefone deve ser mostrado com máscara;
-            * o telefone deve ser persistido sem máscara.
-      E-mail:
-         * Podem ser cadastrados múltiplos e-mails;
-         * Pelo menos um e-mail deve ser cadastrado;
-         * Deve ser um e-mail válido.
-   * */
 
 }

@@ -5,7 +5,6 @@ import com.testedesafio.demo.api.dto.ClienteDTO;
 import com.testedesafio.demo.api.dto.TelefoneDTO;
 import com.testedesafio.demo.enums.Perfil;
 import com.testedesafio.demo.enums.Tipo;
-import com.testedesafio.demo.exception.ErroDeAutenticacao;
 import com.testedesafio.demo.exception.RegraDeNegocioException;
 import com.testedesafio.demo.model.Cliente;
 import com.testedesafio.demo.model.Endereco;
@@ -16,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.MaskFormatter;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,6 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public Cliente salvarCliente(Cliente cliente) {
-        cliente.getEmails().forEach(this::validarEmail);
         return clienteRepository.save(cliente);
     }
 
@@ -36,16 +36,6 @@ public class ClienteServiceImpl implements ClienteService {
     public Cliente atualizar(Cliente cliente) {
         Objects.requireNonNull(cliente.getId());
         return clienteRepository.save(cliente);
-    }
-
-    @Override
-    public void validarEmail(String email) {
-        // Validar outros campos
-        boolean existe = clienteRepository.existsByEmails(email);
-
-        if(existe){
-            throw new RegraDeNegocioException("Email já existe");
-        }
     }
 
     @Override
@@ -98,10 +88,8 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setNome("Fulano");
         cliente.setCpf("3131313131");
         cliente.setEmails(emails);
-        cliente.setPerfis(perfils);
         cliente.setEndereco(endereco);
         cliente.setTelefones(telefones);
-        cliente.setSenha("123");
 
         return cliente;
     }
@@ -111,7 +99,11 @@ public class ClienteServiceImpl implements ClienteService {
                 .stream()
                 .map(telefone -> {
                     TelefoneDTO telefoneDTO = new TelefoneDTO();
-                    telefoneDTO.setNumero(telefone.getNumero());
+                    if (telefone.getTipoTelefone().name().equals("CELULAR")){
+                        telefoneDTO.setNumero(formatarString(telefone.getNumero(),"(##)#####-####"));
+                    } else{
+                        telefoneDTO.setNumero(formatarString(telefone.getNumero(),"(##)####-####"));
+                    }
                     telefoneDTO.setTipoTelefone(telefone.getTipoTelefone());
                     return telefoneDTO;
 
@@ -120,17 +112,15 @@ public class ClienteServiceImpl implements ClienteService {
         ClienteDTO clienteDTO = new ClienteDTO(
                 cliente.getId(),
                 cliente.getNome(),
-                cliente.getCpf(),
-                cliente.getSenha(),
-                cliente.getEndereco().getCep(),
+                formatarString(cliente.getCpf(), "###.###.###-##"),
+                formatarString(cliente.getEndereco().getCep(), "##.###-###"),
                 cliente.getEndereco().getLogradouro(),
                 cliente.getEndereco().getBairro(),
                 cliente.getEndereco().getCidade(),
                 cliente.getEndereco().getUf(),
                 cliente.getEndereco().getComplemento(),
                 telefoneDTOS,
-                cliente.getEmails(),
-                cliente.getPerfis());
+                cliente.getEmails());
 
         return clienteDTO;
     }
@@ -156,15 +146,23 @@ public class ClienteServiceImpl implements ClienteService {
             cliente.setId(clienteDTO.getId());
         }
         cliente.setNome(clienteDTO.getNome());
-        cliente.setSenha(clienteDTO.getSenha());
         cliente.setEmails(clienteDTO.getEmails());
         cliente.setCpf(clienteDTO.getCpf());
         cliente.setEndereco(endereco);
-        cliente.setPerfis(clienteDTO.getPerfis());
         cliente.setTelefones(telefones);
         cliente.getTelefones().forEach(telefone -> telefone.setCliente(cliente));
 
         return cliente;
 
+    }
+
+    public static String formatarString(String texto, String mascara)  {
+        try {
+            MaskFormatter mf = new MaskFormatter(mascara);
+            mf.setValueContainsLiteralCharacters(false);
+            return mf.valueToString(texto);
+        }catch (ParseException e){
+            return e.getMessage();
+        }
     }
 }

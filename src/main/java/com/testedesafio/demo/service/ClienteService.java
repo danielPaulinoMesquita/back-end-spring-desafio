@@ -14,8 +14,6 @@ public interface ClienteService {
 
     Cliente atualizar(Cliente cliente);
 
-    void validarEmail(String email);
-
     List<Cliente> obterClientes();
 
     Optional<Cliente> obterClientePorId(Long id);

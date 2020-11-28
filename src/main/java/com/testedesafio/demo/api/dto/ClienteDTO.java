@@ -13,8 +13,6 @@ public class ClienteDTO {
 
     private String cpf;
 
-    private String senha;
-
     private String cep;
 
     private String logradouro;
@@ -31,19 +29,16 @@ public class ClienteDTO {
 
     private Set<String> emails = new HashSet<>();
 
-    private Set<Perfil> perfis = new HashSet<>();
 
     public ClienteDTO() {
     }
 
-    public ClienteDTO(Long id, String nome, String cpf, String senha, String cep,
+    public ClienteDTO(Long id, String nome, String cpf, String cep,
                       String logradouro,String bairro, String cidade, String uf,
-                      String complemento, Set<TelefoneDTO> telefones, Set<String> emails,
-                      Set<Perfil> perfis) {
-        this.id =id;
+                      String complemento, Set<TelefoneDTO> telefones, Set<String> emails) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
-        this.senha = senha;
         this.cep = cep;
         this.logradouro = logradouro;
         this.bairro = bairro;
@@ -52,7 +47,6 @@ public class ClienteDTO {
         this.complemento = complemento;
         this.telefones = telefones;
         this.emails = emails;
-        this.perfis = perfis;
     }
 
     public Long getId() {
@@ -77,14 +71,6 @@ public class ClienteDTO {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public String getCep() {
@@ -151,11 +137,4 @@ public class ClienteDTO {
         this.emails = emails;
     }
 
-    public Set<Perfil> getPerfis() {
-        return perfis;
-    }
-
-    public void setPerfis(Set<Perfil> perfis) {
-        this.perfis = perfis;
-    }
 }

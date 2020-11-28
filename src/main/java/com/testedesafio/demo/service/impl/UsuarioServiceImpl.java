@@ -4,7 +4,6 @@ import com.testedesafio.demo.api.dto.UsuarioDTO;
 import com.testedesafio.demo.enums.Perfil;
 import com.testedesafio.demo.exception.ErroDeAutenticacao;
 import com.testedesafio.demo.exception.RegraDeNegocioException;
-import com.testedesafio.demo.model.Cliente;
 import com.testedesafio.demo.model.Usuario;
 import com.testedesafio.demo.service.UsuarioService;
 import org.springframework.stereotype.Service;
@@ -50,7 +49,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         comum.setSenha("123456");
         comum.setPerfil(Perfil.COMUM);
 
-
         List<Usuario> usuarios = new ArrayList<Usuario>(Arrays.asList(admin, comum));
 
         return usuarios;
@@ -65,12 +63,4 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioDTO;
     }
 
-    public static Usuario converte(UsuarioDTO usuarioDTO){
-        Usuario usuario = new Usuario();
-        usuario.setUsuario(usuarioDTO.getUsuario());
-        usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setPerfil(Perfil.valueOf(usuarioDTO.getPerfil()));
-
-        return usuario;
-    }
 }
