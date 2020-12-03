@@ -66,34 +66,6 @@ public class ClienteServiceImpl implements ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    /**
-     * Método para retornar cliente mockado
-     * @return
-     */
-    public Cliente getCliente(){
-        Endereco endereco = new Endereco("221221","quebrada","recanto","Brasília","DF","perto de tal");
-        Telefone telefone1 = new Telefone(Tipo.RESIDENCIAL,"4322-5555");
-        Telefone telefone2 = new Telefone(Tipo.CELULAR,"99322-5555");
-        String email= "alguma@gmail.com";
-        Set<String> emails= new HashSet<>();
-        emails.add(email);
-        Set<Perfil> perfils = new HashSet<>();
-        perfils.add(Perfil.ADMIN);
-
-        Set<Telefone> telefones = new HashSet<>();
-        telefones.addAll(Arrays.asList(telefone1,telefone2));
-
-        Cliente cliente = new Cliente();
-        cliente.setId(1l);
-        cliente.setNome("Fulano");
-        cliente.setCpf("3131313131");
-        cliente.setEmails(emails);
-        cliente.setEndereco(endereco);
-        cliente.setTelefones(telefones);
-
-        return cliente;
-    }
-
     public static ClienteDTO converte(Cliente cliente){
         Set<TelefoneDTO> telefoneDTOS = cliente.getTelefones()
                 .stream()
