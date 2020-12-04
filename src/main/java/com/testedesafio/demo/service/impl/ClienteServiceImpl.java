@@ -3,8 +3,6 @@ package com.testedesafio.demo.service.impl;
 
 import com.testedesafio.demo.api.dto.ClienteDTO;
 import com.testedesafio.demo.api.dto.TelefoneDTO;
-import com.testedesafio.demo.enums.Perfil;
-import com.testedesafio.demo.enums.Tipo;
 import com.testedesafio.demo.exception.RegraDeNegocioException;
 import com.testedesafio.demo.model.Cliente;
 import com.testedesafio.demo.model.Endereco;
@@ -41,7 +39,6 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public List<Cliente> obterClientes() {
         return clienteRepository.findAll();
-
     }
 
     @Override
@@ -52,7 +49,12 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void deletar(Long id) {
+        existe(id);
+        clienteRepository.deleteById(id);
+    }
 
+    @Override
+    public void existe(Long id){
         boolean existe = false;
 
         if(id != null){
@@ -62,8 +64,6 @@ public class ClienteServiceImpl implements ClienteService {
         if (!existe){
             throw new RegraDeNegocioException("Cliente não existe");
         }
-
-        clienteRepository.deleteById(id);
     }
 
     public static ClienteDTO converte(Cliente cliente){

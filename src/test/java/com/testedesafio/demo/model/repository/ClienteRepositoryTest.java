@@ -89,7 +89,7 @@ public class ClienteRepositoryTest {
      * Método para retornar cliente mockado
      * @return
      */
-    public Cliente getCliente(){
+    public static Cliente getCliente(){
         Endereco endereco = new Endereco("221221","quebrada","recanto","Brasília","DF","perto de tal");
         Telefone telefone1 = new Telefone(Tipo.RESIDENCIAL,"4322-5555");
         Telefone telefone2 = new Telefone(Tipo.CELULAR,"99322-5555");

@@ -17,4 +17,6 @@ public interface ClienteService {
     List<Cliente> obterClientes();
 
     Optional<Cliente> obterClientePorId(Long id);
+
+    void existe(Long id);
 }

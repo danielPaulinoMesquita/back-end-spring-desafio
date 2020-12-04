@@ -31,8 +31,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuario1.get();
     }
 
-
-    private Optional<Usuario> findByUsuario(String usuario){
+    @Override
+    public Optional<Usuario> findByUsuario(String usuario){
         return usuarioRepositoryMockado()
                 .stream().filter(user -> user.getUsuario().equals(usuario)).findAny();
     }
