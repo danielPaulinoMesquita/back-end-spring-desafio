@@ -9,9 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfigurationCors implements WebMvcConfigurer {
 
-    private static final String FRONT_ANGULAR = "http://localhost:4200";
-    private static final String FRONT_REACT = "http://localhost:3000";
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET","POST","PUT","DELETE","OPTIONS");
